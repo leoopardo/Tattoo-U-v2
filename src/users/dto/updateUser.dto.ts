@@ -1,16 +1,14 @@
-import { ObjectId } from 'mongoose';
-import { PostDto } from './../../posts/dto/post.dto';
 import { CreateScheduleDto } from './../../schedules/dto/create-schedule.dto';
+import { PostDto } from './../../posts/dto/post.dto';
 import {
   IsArray,
   IsEmail,
-  IsEmpty,
   IsNotEmpty,
   IsOptional,
   IsString,
 } from 'class-validator';
 
-export class UserDto {
+export class UpdateUserDto {
   profilePicture: any;
   @IsString()
   @IsNotEmpty()
@@ -21,8 +19,6 @@ export class UserDto {
   @IsEmail()
   @IsNotEmpty()
   email: string;
-  @IsString()
-  role: string;
   @IsString()
   country: string;
   @IsString()
@@ -35,7 +31,4 @@ export class UserDto {
   @IsOptional()
   @IsArray()
   schedules: CreateScheduleDto[];
-  @IsString()
-  @IsNotEmpty()
-  password: string;
 }

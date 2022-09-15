@@ -1,3 +1,4 @@
+import { FileInterceptor } from '@nestjs/platform-express';
 import {
   Controller,
   Get,
@@ -6,6 +7,8 @@ import {
   Patch,
   Param,
   Delete,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { PostDto } from './dto/post.dto';
@@ -14,28 +17,41 @@ import { PostDto } from './dto/post.dto';
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
-  @Post()
-  create(@Body() createPostDto: PostDto) {
-    return this.postsService.create(createPostDto);
+  @Post('/:ownerId')
+  @UseInterceptors(FileInterceptor('image'))
+  async create(
+    @Param('ownerId') ownerId: string,
+    @Body() createPostDto: PostDto,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    const upload: any = await this.postsService.uploadImageToCloudNary(file);
+    console.log(upload, 'aqui');
+    return this.postsService.create(ownerId, createPostDto, upload.url);
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     return this.postsService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     return this.postsService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePostDto: PostDto) {
-    return this.postsService.update(+id, updatePostDto);
+  @UseInterceptors(FileInterceptor('image'))
+  async update(
+    @Param('id') id: string,
+    @Body() createPostDto: PostDto,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    const upload: any = await this.postsService.uploadImageToCloudNary(file);
+    return this.postsService.update(id, createPostDto, upload.url);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     return this.postsService.remove(+id);
   }
 }

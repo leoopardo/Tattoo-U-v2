@@ -1,6 +1,7 @@
-import { PostDto } from '../../posts/dto/post.dto';
+import { PostDto } from './../../posts/dto/post.dto';
+import { CreateScheduleDto } from './../../schedules/dto/create-schedule.dto';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, ObjectId, Schema as MongooseSchema } from 'mongoose';
+import { Document, Schema as MongooseSchema } from 'mongoose';
 
 enum UserRole {
   ARTIST = 'ARTIST',
@@ -23,8 +24,18 @@ class User extends Document {
   country: string;
   state: string;
   city: string;
-  @Prop()
+  @Prop({
+    type: [MongooseSchema.Types.ObjectId],
+    ref: 'posts',
+    required: false,
+  })
   posts: PostDto[];
+  @Prop({
+    type: [MongooseSchema.Types.ObjectId],
+    ref: 'schedules',
+    required: false,
+  })
+  schedules: CreateScheduleDto[];
   @Prop({ required: true })
   password: string;
   @Prop()

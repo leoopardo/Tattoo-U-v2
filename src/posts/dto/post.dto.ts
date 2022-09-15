@@ -1,7 +1,9 @@
-import { postLikes } from 'src/Types/post-likes-types';
+import { ObjectId } from 'mongoose';
+import { postLikes } from 'src/types/post-likes-types';
 import { IsString } from 'class-validator';
 
 export class PostDto {
+  owner: ObjectId;
   postImage: any;
   @IsString()
   postTitle: string;
