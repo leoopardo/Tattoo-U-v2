@@ -1,5 +1,5 @@
-import { PostDto } from './../../posts/dto/post.dto';
-import { CreateScheduleDto } from './../../schedules/dto/create-schedule.dto';
+import { PostDto } from '../../posts/dto/post.dto';
+import { CreateScheduleDto } from '../../schedules/dto/create-schedule.dto';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MongooseSchema } from 'mongoose';
 

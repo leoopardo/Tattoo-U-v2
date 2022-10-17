@@ -1,6 +1,6 @@
 import { User, UserSchema } from 'src/users/entities/user.entity';
 import { UsersModule } from 'src/users/users.module';
-import { CloudinaryModule } from './../cloudinary/cloudinary.module';
+import { CloudinaryModule } from '../cloudinary/cloudinary.module';
 import { Module } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { PostsController } from './posts.controller';

@@ -1,4 +1,4 @@
-import { CloudinaryModule } from './../cloudinary/cloudinary.module';
+import { CloudinaryModule } from '../cloudinary/cloudinary.module';
 import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Module } from '@nestjs/common';

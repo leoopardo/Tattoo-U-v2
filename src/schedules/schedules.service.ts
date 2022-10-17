@@ -1,7 +1,5 @@
-import { CloudinaryService } from './../cloudinary/cloudinary.service';
 import { Injectable } from '@nestjs/common';
 import { CreateScheduleDto } from './dto/create-schedule.dto';
-import { UpdateScheduleDto } from './dto/update-schedule.dto';
 import { Schedule } from './entities/schedule.entity';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -14,23 +12,13 @@ export class SchedulesService {
     private readonly user: Model<User>,
     @InjectModel(Schedule.name)
     private readonly schedule: Model<Schedule>,
-    private readonly cloudinary: CloudinaryService,
   ) {}
 
-  async uploadImageToCloudNary(file: Express.Multer.File) {
-    return await this.cloudinary.uploadImage(file).catch(() => {
-      console.log('Invalid file type.');
-    });
-  }
-  async create(
-    ownerId: string,
-    createScheduleDto: CreateScheduleDto,
-    url: string,
-  ) {
+  async create(ownerId: string, createScheduleDto: CreateScheduleDto) {
     const ScheduleModel: CreateScheduleDto = {
       owner: ownerId,
       date: createScheduleDto.date,
-      art: url,
+      art: createScheduleDto.art,
       client: createScheduleDto.client,
       price: createScheduleDto.price,
     };
@@ -53,19 +41,11 @@ export class SchedulesService {
     return this.schedule.find({ owner: ownerId });
   }
 
-  async update(
-    id: string,
-    updateScheduleDto: CreateScheduleDto,
-    imageUrl: string,
-  ) {
-    const schedule: UpdateScheduleDto = {
-      date: updateScheduleDto.date,
-      art: imageUrl,
-      client: updateScheduleDto.client,
-      price: updateScheduleDto.price,
-    };
-    if (!schedule.art) schedule.art = '';
-    return await this.schedule.findByIdAndUpdate({ _id: id }, schedule);
+  async update(id: string, updateScheduleDto: CreateScheduleDto) {
+    return await this.schedule.findByIdAndUpdate(
+      { _id: id },
+      updateScheduleDto,
+    );
   }
 
   async remove(ownerId: string, id: string) {

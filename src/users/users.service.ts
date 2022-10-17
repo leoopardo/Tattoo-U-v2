@@ -1,5 +1,4 @@
 import { UpdateUserDto } from './dto/updateUser.dto';
-import { CloudinaryService } from './../cloudinary/cloudinary.service';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -14,17 +13,11 @@ export class UsersService {
   constructor(
     @InjectModel(User.name)
     private readonly User: Model<User>,
-    private readonly cloudinary: CloudinaryService,
   ) {}
 
-  async uploadImageToCloudNary(file: Express.Multer.File) {
-    return await this.cloudinary.uploadImage(file).catch(() => {
-      console.log('Invalid file type.');
-    });
-  }
-  async create(createUserDto: UserDto, imageUrl: string) {
+  async create(createUserDto: UserDto) {
     const user = {
-      profilePicture: imageUrl,
+      profilePicture: createUserDto.profilePicture,
       firstname: createUserDto.firstname,
       lastname: createUserDto.lastname,
       email: createUserDto.email,
@@ -34,8 +27,6 @@ export class UsersService {
       city: createUserDto.city,
       password: await argon2.hash(createUserDto.password),
     };
-
-    if (!user.profilePicture) user.profilePicture = '';
 
     return this.User.create(user);
   }
@@ -58,15 +49,8 @@ export class UsersService {
       .exec();
   }
 
-  update(id: string, updateUserDto: UpdateUserDto, url) {
-    let update;
-    url
-      ? (update = {
-          profilePicture: url,
-        })
-      : (update = updateUserDto);
-
-    return this.User.findByIdAndUpdate({ _id: id }, update).exec();
+  update(id: string, updateUserDto: UpdateUserDto) {
+    return this.User.findByIdAndUpdate({ _id: id }, updateUserDto).exec();
   }
 
   remove(id: string) {

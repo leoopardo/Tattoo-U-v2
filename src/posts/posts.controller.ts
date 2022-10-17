@@ -18,15 +18,11 @@ export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @Post('/:ownerId')
-  @UseInterceptors(FileInterceptor('image'))
   async create(
     @Param('ownerId') ownerId: string,
     @Body() createPostDto: PostDto,
-    @UploadedFile() file: Express.Multer.File,
   ) {
-    const upload: any = await this.postsService.uploadImageToCloudNary(file);
-    console.log(upload, 'aqui');
-    return this.postsService.create(ownerId, createPostDto, upload.url);
+    return this.postsService.create(ownerId, createPostDto);
   }
 
   @Get()
@@ -40,14 +36,8 @@ export class PostsController {
   }
 
   @Patch(':id')
-  @UseInterceptors(FileInterceptor('image'))
-  async update(
-    @Param('id') id: string,
-    @Body() createPostDto: PostDto,
-    @UploadedFile() file: Express.Multer.File,
-  ) {
-    const upload: any = await this.postsService.uploadImageToCloudNary(file);
-    return this.postsService.update(id, createPostDto, upload.url);
+  async update(@Param('id') id: string, @Body() createPostDto: PostDto) {
+    return this.postsService.update(id, createPostDto);
   }
 
   @Delete(':id')

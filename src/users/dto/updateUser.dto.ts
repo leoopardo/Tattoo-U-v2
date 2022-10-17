@@ -1,5 +1,5 @@
-import { CreateScheduleDto } from './../../schedules/dto/create-schedule.dto';
-import { PostDto } from './../../posts/dto/post.dto';
+import { CreateScheduleDto } from '../../schedules/dto/create-schedule.dto';
+import { PostDto } from '../../posts/dto/post.dto';
 import {
   IsArray,
   IsEmail,

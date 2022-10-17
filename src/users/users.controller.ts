@@ -1,6 +1,6 @@
 import { UpdateUserDto } from './dto/updateUser.dto';
 import { User } from 'src/users/entities/user.entity';
-import { JwtAccessTokenAuthGuard } from './../auth/guards/jwt-access-token-auth.guard';
+import { JwtAccessTokenAuthGuard } from '../auth/guards/jwt-access-token-auth.guard';
 import {
   Controller,
   Get,
@@ -10,26 +10,18 @@ import {
   Param,
   Delete,
   UseGuards,
-  UseInterceptors,
-  UploadedFile,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UserDto } from './dto/user.dto';
 import { UserDecorator } from './user.decorator';
-import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  @UseInterceptors(FileInterceptor('profilePicture'))
-  async create(
-    @Body() createUserDto: UserDto,
-    @UploadedFile() file: Express.Multer.File,
-  ) {
-    const upload: any = await this.usersService.uploadImageToCloudNary(file);
-    return await this.usersService.create(createUserDto, upload.url);
+  async create(@Body() createUserDto: UserDto) {
+    return await this.usersService.create(createUserDto);
   }
 
   @UseGuards(JwtAccessTokenAuthGuard)
@@ -49,14 +41,8 @@ export class UsersController {
   }
 
   @Patch('/:id')
-  @UseInterceptors(FileInterceptor('profilePicture'))
-  async update(
-    @Param('id') id: string,
-    @Body() updateUserDto: UpdateUserDto,
-    @UploadedFile() file: Express.Multer.File,
-  ) {
-    const upload: any = await this.usersService.uploadImageToCloudNary(file);
-    return await this.usersService.update(id, updateUserDto, upload.url);
+  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    return await this.usersService.update(id, updateUserDto);
   }
 
   @Delete(':id')
