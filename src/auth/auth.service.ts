@@ -31,9 +31,10 @@ export class AuthService {
 
     return {
       id: user._id,
+      profilePicture: user.profilePicture,
       email: user.email,
-      firstName: user.firstname,
-      lastName: user.lastname,
+      firstname: user.firstname,
+      lastname: user.lastname,
       country: user.country,
       state: user.state,
       city: user.city,

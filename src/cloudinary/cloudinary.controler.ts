@@ -14,7 +14,6 @@ export class CloudinaryController {
   @Post()
   @UseInterceptors(FileInterceptor('image'))
   async create(@UploadedFile() file: Express.Multer.File) {
-    console.log(file);
     return await this.cloudinaryService.uploadImage(file);
   }
 }

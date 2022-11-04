@@ -24,7 +24,6 @@ export class UsersController {
     return await this.usersService.create(createUserDto);
   }
 
-  @UseGuards(JwtAccessTokenAuthGuard)
   @Get('/me')
   getMe(@UserDecorator() user: User) {
     return user;
