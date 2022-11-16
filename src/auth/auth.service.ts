@@ -30,7 +30,7 @@ export class AuthService {
     const refreshToken = await this.getRefreshToken(user);
 
     return {
-      id: user._id,
+      _id: user._id,
       profilePicture: user.profilePicture,
       email: user.email,
       firstname: user.firstname,
